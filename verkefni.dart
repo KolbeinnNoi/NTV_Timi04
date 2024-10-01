@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 // Try writing code using a while loop which coutns down to one, 
 // and then prints "Happy New Year". Use a while loop
 void main () {
@@ -11,9 +12,9 @@ void main () {
   // loopPizzaAgain();
   // loopPizzaAgain2();
   // loopPizzaAgain3();
-  bossChallenge1();
-  bossChallenge2();
-  bossChallenge3();
+  // bossChallenge1();
+  // bossChallenge2();
+  // bossChallenge3();
   bossChallenge4();
   
 }
@@ -170,26 +171,66 @@ void forLoopNTV () {
     // 4. If the calorie value of the snack is such that eating it will leave the user under their
     // daily calorie target the program must tell them they are welcome to eat it and tell them how many
     //  calories they can still eat after this.
+    // 5. If the calorie value of the snack is such taht eating it will exactly meet the daily calorie target
+    // the program must tell them they are welcome to eat it and tell them that this should be their last 
+    // snack for the day
 
         void bossChallenge4 () {
       print("Enter your daily calorie intake limit!");
       String? maxCalInput = stdin.readLineSync();
       int? maxCalorieIntake = maxCalInput != null ? int.tryParse(maxCalInput) : null;
+      print("Your daily calorie limit is $maxCalorieIntake");
       
-      int? caloriesEaten;
+      
+      int caloriesEaten = 0;
+      
+    
 
+      while (true) {
+      int? caloriesLeft = (maxCalorieIntake ?? 0) - (caloriesEaten ?? 0);
+
+      // if(caloriesLeft <= 0) {
+      //   print("You have reached your calorie limit for the day! your maximum for the day was $maxCalorieIntake and you have eaten $caloriesEaten");
+      //   break;
+      // }
       print("Enter the name of the snack you want to eat!");
-      String? nextSnackInput = stdin.readLineSync();
-      int? nextSnack = nextSnackInput != null ? int.tryParse(nextSnackInput) : null;
+      String? nextSnack = stdin.readLineSync();
+      
 
       print("How many calories are in $nextSnack?");
       String? calValueNextSnackInput = stdin.readLineSync();
       int? calValueNextSnack = calValueNextSnackInput != null ? int.tryParse(calValueNextSnackInput) : null;
-      
-      
- 
-    }
 
-    // 5. If the calorie value of the snack is such taht eating it will exactly meet the daily calorie target
-    // the program must tell them they are welcome to eat it and tell them that this should be their last 
-    // snack for the day.
+      if (calValueNextSnack == null || calValueNextSnack <=0) {
+        print("Invalid calorie input, try again.");
+        continue;
+      } else {
+        print("$nextSnack is $calValueNextSnack calories");
+        caloriesEaten += calValueNextSnack;
+      }
+
+      // recalculate how many calories are left after eating this snack
+      caloriesLeft = (maxCalorieIntake ?? 0) - caloriesEaten;
+      print("You have eaten $caloriesEaten out of $maxCalorieIntake. You have $caloriesLeft calories left for they day.");
+      
+      if (maxCalorieIntake! > caloriesEaten) {
+      print("Do you want to add another snack? (yes/no)");
+      String? continueInput = stdin.readLineSync();
+      // we put it to lowercase to make sure no matter how he types yes this works
+      if(continueInput?.toLowerCase() != "yes") {
+        break;
+      } 
+      } else {
+        print("You have reached your calorie limit for the day! your maximum for the day was $maxCalorieIntake and you have eaten $caloriesEaten");
+        break;
+      }
+      
+      
+
+      }
+      }  
+      // print("There are $calValueNextSnack calories in $nextSnack so you have $caloriesLeft calories left to eat for the day");
+ 
+    
+        
+    
